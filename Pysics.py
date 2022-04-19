@@ -1,6 +1,8 @@
 import decimal as decimal_module
 from random import sample
 
+from numpy import var
+
 def decimal(number=0):
     """
     Convert a number from number type to decimal.Decimal type.
@@ -11,6 +13,26 @@ def decimal(number=0):
         return number
     return decimal_module.Decimal(str(number))
 
+def t_factor(number,precision=0):
+    """
+    Return the t factor at 0.683 probability for given degree of freedom and precision.
+    :param number: (number) Degree of freedom starting from 2.
+    :param precision: (number) The precision level. 0 by default for all set to 1 when number>=6, or 1 for t factor with 2 digits, or 2 for t factor with 5 digits.
+    :return: (decimal.Decimal) The t factor for given degree of freedom and precision.
+    """
+    t_factors=[[0,0,1.84,1.32,1.20,1.14,1,1,1,1,1,1,1],[0,0,1.84,1.32,1.20,1.14,1.11,1.09,1.08,1.07,1.06,1.05,1.03],[0,0,1.83741,1.32132,1.19691,1.14165,1.11053,1.09059,1.07674,1.06655,1.05875,1.05259,1.04759]]
+    
+    return decimal(t_factors[precision][number])
+    
+def minimum_correlation(number):
+    """
+    Return the minimum correlation for given degree of freedom.
+    :param number: (number) Degree of freedom ranging from 3 to 20.
+    :return: (decimal.Decimal) The minimum correlation for given degree of freedom and precision.
+    """
+    minimum_correlations=[0,0,0,1,0.99,0.959,0.917,0.874,0.834,0.798,0.765,0.735,0.708,0.684,0.661,0.641,0.623,0.606,0.59,0.575,0.561]
+    return decimal(minimum_correlations[number])
+
 class Dataset:
     """
     Dataset with multiple variables.
@@ -18,44 +40,45 @@ class Dataset:
     :attr n: The number of data pairs.
     :attr variables: Names of variables.
     :attr dataset: Variables as keys with its data as values.
-    :method list(): Print all variable names and its values.
-    :method rename(): Rename an existing variable.
-    :method remove(): Remove and return an existing variable.
-    :method update(): Add a list of values of a new variable with the same length n.
-    :method maximum(): Return the minimum of an existing variable.
-    :method minimum(): Return the minimum of an existing variable.
-    :method range(): Return the range of an existing variable.
-    :method sum(): Return the sum of an existing variable.
-    :method square_sum(): Return the square sum of an existing variable.
-    :method product(): Return a list of the product of two existing variables.
-    :method continued_product(): Return the product of an existing variable.
-    :method median(): Return the median of an existing variable.
-    :method arithmic_mean(): Return the arithmic mean of an existing variable.
-    :method geometric_mean(): Return the geometric mean of an existing variable.
-    :method square_sum_mean(): Return the square sum mean of an existing variable.
-    :method product_mean(): Return the product mean of two existing variables.
-    :method successive_minus(): Return the successive minus of an existing variable.
-    :method sample_variance(): Return the sample variance of an existing variable.
-    :method population_variance(): Return the population variance of an existing variable.
-    :method covariance(): Return the covariance of two existing variables.
-    :method absolute_deviation(): Return the absolute variance of an existing variable.
-    :method relative_deviation(): Return the relative variance of an existing variable.
-    :method sample_standard_deviation(): Return the sample standard deviation of an existing variable.
-    :method population_standard_deviation(): Return the population standard deviation of an existing variable.
-    :method correlation(): Return the correlation of two existing variables.
-    :method least_square_slope(): Return the slope of the line plotted by two existing variables using least square method.
-    :method least_square_bias(): Return the bias of the line plotted by two existing variables using least square method.
+    :func list(): Print all variable names and its values.
+    :func rename(): Rename an existing variable.
+    :func remove(): Remove an existing variable.
+    :func pop(): Remove the number-th (starting from 1) data from all existing variables.
+    :func pop_bad_data(): Remove the bad data depending on an existing variable and t factor. Returns the indexes of the removed data.
+    :func update(): Add a list of values of a new variable with the same length n.
+    :func maximum(): Return the minimum of an existing variable.
+    :func minimum(): Return the minimum of an existing variable.
+    :func range(): Return the range of an existing variable.
+    :func sum(): Return the sum of an existing variable.
+    :func square_sum(): Return the square sum of an existing variable.
+    :func product(): Return a list of the product of two existing variables.
+    :func continued_product(): Return the product of an existing variable.
+    :func median(): Return the median of an existing variable.
+    :func arithmic_mean(): Return the arithmic mean of an existing variable.
+    :func geometric_mean(): Return the geometric mean of an existing variable.
+    :func square_sum_mean(): Return the square sum mean of an existing variable.
+    :func product_mean(): Return the product mean of two existing variables.
+    :func successive_minus(): Return the successive minus of an existing variable.
+    :func sample_variance(): Return the sample variance of an existing variable.
+    :func population_variance(): Return the population variance of an existing variable.
+    :func covariance(): Return the covariance of two existing variables.
+    :func absolute_deviation(): Return the absolute variance of an existing variable.
+    :func relative_deviation(): Return the relative variance of an existing variable.
+    :func sample_standard_deviation(): Return the sample standard deviation of an existing variable.
+    :func population_standard_deviation(): Return the population standard deviation of an existing variable.
+    :func correlation(): Return the correlation of two existing variables.
+    :func least_square_slope(): Return the slope of the line plotted by two existing variables using least square func.
+    :func least_square_bias(): Return the bias of the line plotted by two existing variables using least square func.
     """
     def __init__(self):
         self.m,self.n,self.variables,self.dataset=0,0,list(),dict()
-        for variable in self.variables:
-            self.dataset.update({variable:list()})
     def list(self):
         """
         Print all variable names and its values.
         """
-        for i in range(self.m):
-            print(self.variables[i],'    ',self.dataset[self.variables[i]])
+        print(self.m,'    ',self.n)
+        for variable,values in self.dataset.items():
+            print(variable,'    ',values)
     def rename(self,ovariable,nvariable):
         """
         Rename an existing variable.
@@ -66,12 +89,36 @@ class Dataset:
         self.variables=[self.dataset.keys()]
     def remove(self,variable):
         """
-        Remove and return an existing variable.
+        Remove an existing variable.
         :param variable: (str) Name of an existing variable.
-        :return: (list(decimal.Decimal,...)) The removed variable with its values.
         """
         self.dataset.pop(variable)
         self.m-=1
+        self.variables=[self.dataset.keys()]
+    def pop(self,*numbers):
+        """
+        Remove the number-th (starting from 1) data from all existing variables.
+        :param numbers: (tuple(number,...)) Indexes of the data to remove.
+        """
+        if type(numbers[0])==tuple:
+            numbers=numbers[0]
+        numbers=tuple(number-1 for number in numbers)
+        for variable in self.dataset.keys():
+            self.dataset[variable]=[value for i,value in enumerate(self.dataset[variable]) if i not in numbers]
+        self.n-=len(numbers)
+    def pop_bad_data(self,variable,t_factor=decimal(1)):
+        """
+        Remove the bad data depending on an existing variable and t factor. Returns the indexes of the removed data.
+        :param variable: (str) Name of an existing variable.
+        :param t_factor: (number|decimal.Decimal) the t factor for converting sample standard deviation to population standard deviation.
+        :return: (list(number,...)) Indexes of the removed data. 
+        """
+        sample_standard_deviation=self.sample_standard_deviation(variable)/t_factor
+        absolute_deviation=[abs(value) for value in self.absolute_deviation(variable)]
+        dataset=[self.dataset[variable][i] if absolute_deviation[i]<=sample_standard_deviation else None for i in range(self.n)]
+        indexes_to_remove=[i for i,value in enumerate(dataset) if value==None]
+        self.pop(tuple(index+1 for index in indexes_to_remove))
+        return [index+1 for index in indexes_to_remove]
     def update(self,variable,values):
         """
         Add a list of values of a new variable with the same length n.
@@ -245,7 +292,7 @@ class Dataset:
         return self.covariance(ivariable,dvariable)/(self.population_standard_deviation(ivariable)*self.population_standard_deviation(dvariable))
     def least_square_slope(self,ivariable,dvariable):
         """
-        Return the slope of the line plotted by two existing variables using least square method.
+        Return the slope of the line plotted by two existing variables using least square func.
         :param avariable: (str) Name of an existing variable as the independent variable.
         :param bvariable: (str) Name of an existing variable as the dependent variable.
         :return: (decimal.Decimal) The slope of the line plotted by the given variables.
@@ -254,7 +301,7 @@ class Dataset:
     def least_square_bias(self,ivariable,dvariable):
         
         """
-        Return the bias of the line plotted by two existing variables using least square method.
+        Return the bias of the line plotted by two existing variables using least square func.
         :param avariable: (str) Name of an existing variable as the independent variable.
         :param bvariable: (str) Name of an existing variable as the dependent variable.
         :return: (decimal.Decimal) The bias of the line plotted by the given variables.
