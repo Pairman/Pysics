@@ -179,7 +179,7 @@ class Dataset:
         :param variable: (str) Name of an existing variable.
         :return: (decimal.Decimal) The successive minus of the given variable.
         """
-        if self.n is 1:
+        if self.n==1:
             return decimal()
         return decimal(sum(self.dataset[variable][2+self.n//2:])-sum(self.dataset[variable][:self.n//2]))/decimal((self.n//2)*(self.n//2)) if self.n%2 else decimal(sum(self.dataset[variable][self.n//2:])-sum(self.dataset[variable][:self.n//2]))/decimal((self.n//2)*(self.n//2))
     def sample_variance(self,variable):
