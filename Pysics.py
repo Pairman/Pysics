@@ -14,8 +14,6 @@ def decimal(number=0):
 class Dataset:
     """
     Dataset with multiple variables.
-    :param m: (int) The number of variables.
-    :param n: (int) The number of data pairs.
     :attr m: The number of variables.
     :attr n: The number of data pairs.
     :attr variables: Names of variables.
