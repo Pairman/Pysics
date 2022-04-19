@@ -1,5 +1,6 @@
 # Pysics
 Statistic tools for calculating data from physical experiments, in Python.
+This module uses the `decimal` module
 
 # Functions
 ## decimal()
