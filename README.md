@@ -5,10 +5,16 @@ This module uses the `decimal` module.
 # Functions
 ## decimal()
 Convert a number from number type to decimal.Decimal type.
+## t_factor()
+Return the t factor at 0.683 probability for given degree of freedom and precision.
+## minimum_correlation()
+Return the minimum correlation for given degree of freedom.
 
 # Classes
+
 ## Dataset
 Dataset with multiple variables.
+
 ### Attributions
 :attr m: The number of variables.
 
@@ -17,57 +23,62 @@ Dataset with multiple variables.
 :attr variables: Names of variables.
 
 :attr dataset: Variables as keys with its data as values.
+
 ### Methods
-:method list(): Print all variable names and its values.
+:func list(): Print all variable names and its values.
 
-:method rename(): Rename an existing variable.
+:func rename(): Rename an existing variable.
 
-:method remove(): Remove and return an existing variable.
+:func remove(): Remove an existing variable.
 
-:method update(): Add a list of values of a new variable with the same length n.
+:func pop(): Remove the number-th (starting from 1) data from all existing variables.
 
-:method maximum(): Return the minimum of an existing variable.
+:func pop_bad_data(): Remove the bad data depending on an existing variable and t factor. Returns the indexes of the removed data.
 
-:method minimum(): Return the minimum of an existing variable.
+:func update(): Add a list of values of a new variable with the same length n.
 
-:method range(): Return the range of an existing variable.
+:func maximum(): Return the minimum of an existing variable.
 
-:method sum(): Return the sum of an existing variable.
+:func minimum(): Return the minimum of an existing variable.
 
-:method square_sum(): Return the square sum of an existing variable.
+:func range(): Return the range of an existing variable.
 
-:method product(): Return a list of the product of two existing variables.
+:func sum(): Return the sum of an existing variable.
 
-:method continued_product(): Return the product of an existing variable.
+:func square_sum(): Return the square sum of an existing variable.
 
-:method median(): Return the median of an existing variable.
+:func product(): Return a list of the product of two existing variables.
 
-:method arithmic_mean(): Return the arithmic mean of an existing variable.
+:func continued_product(): Return the product of an existing variable.
 
-:method geometric_mean(): Return the geometric mean of an existing variable.
+:func median(): Return the median of an existing variable.
 
-:method square_sum_mean(): Return the square sum mean of an existing variable.
+:func arithmic_mean(): Return the arithmic mean of an existing variable.
 
-:method product_mean(): Return the product mean of two existing variables.
+:func geometric_mean(): Return the geometric mean of an existing variable.
 
-:method successive_minus(): Return the successive minus of an existing variable.
+:func square_sum_mean(): Return the square sum mean of an existing variable.
 
-:method sample_variance(): Return the sample variance of an existing variable.
+:func product_mean(): Return the product mean of two existing variables.
 
-:method population_variance(): Return the population variance of an existing variable.
+:func successive_minus(): Return the successive minus of an existing variable.
 
-:method covariance(): Return the covariance of two existing variables.
+:func sample_variance(): Return the sample variance of an existing variable.
 
-:method absolute_deviation(): Return the absolute variance of an existing variable.
+:func population_variance(): Return the population variance of an existing variable.
 
-:method relative_deviation(): Return the relative variance of an existing variable.
+:func covariance(): Return the covariance of two existing variables.
 
-:method sample_standard_deviation(): Return the sample standard deviation of an existing variable.
+:func absolute_deviation(): Return the absolute variance of an existing variable.
 
-:method population_standard_deviation(): Return the population standard deviation of an existing variable.
+:func relative_deviation(): Return the relative variance of an existing variable.
 
-:method correlation(): Return the correlation of two existing variables.
+:func sample_standard_deviation(): Return the sample standard deviation of an existing variable.
 
-:method least_square_slope(): Return the slope of the line plotted by two existing variables using least square method.
+:func population_standard_deviation(): Return the population standard deviation of an existing variable.
 
-:method least_square_bias(): Return the bias of the line plotted by two existing variables using least square method.
+:func correlation(): Return the correlation of two existing variables.
+
+:func least_square_slope(): Return the slope of the line plotted by two existing variables using least square func.
+
+:func least_square_bias(): Return the bias of the line plotted by two existing variables using least square func.
