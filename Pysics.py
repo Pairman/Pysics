@@ -9,9 +9,7 @@ def decimal(number=0):
     :param number: (number) The number to convert.
     :return: (decimal.Decimal) The number in decimal.Decimal form.
     """
-    if type(number) is decimal_module.Decimal:
-        return number
-    return decimal_module.Decimal(str(number))
+    return number if type(number) is decimal_module.Decimal else decimal_module.Decimal(str(number))
 
 def t_factor(number,precision=0):
     """
