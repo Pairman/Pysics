@@ -1,7 +1,4 @@
 import decimal as decimal_module
-from random import sample
-
-from numpy import var
 
 def decimal(number=0):
     """
