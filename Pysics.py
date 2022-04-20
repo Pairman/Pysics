@@ -16,7 +16,6 @@ def t_factor(number,precision=0):
     :return: (decimal.Decimal) The t factor for given degree of freedom and precision.
     """
     t_factors=[[0,0,1.84,1.32,1.20,1.14,1,1,1,1,1,1,1],[0,0,1.84,1.32,1.20,1.14,1.11,1.09,1.08,1.07,1.06,1.05,1.03],[0,0,1.83741,1.32132,1.19691,1.14165,1.11053,1.09059,1.07674,1.06655,1.05875,1.05259,1.04759]]
-    
     return decimal(t_factors[precision][number])
     
 def minimum_correlation(number):
@@ -71,9 +70,12 @@ class Dataset:
         """
         Print all variable names and its values.
         """
-        print(self.m,'    ',self.n)
+        print([[self.m,self.variables],self.n])
         for variable,values in self.dataset.items():
-            print(variable,'    ',values)
+            print("'{}' [{}".format(variable,values[0]),end='')
+            for i in range(1,len(values)):
+                print(',',values[i],end='')
+            print(']')
     def rename(self,ovariable,nvariable):
         """
         Rename an existing variable.
@@ -110,7 +112,7 @@ class Dataset:
         """
         sample_standard_deviation=self.sample_standard_deviation(variable)/t_factor
         absolute_deviation=[abs(value) for value in self.absolute_deviation(variable)]
-        dataset=[self.dataset[variable][i] if absolute_deviation[i]<=sample_standard_deviation else None for i in range(self.n)]
+        dataset=[self.dataset[variable][i] if absolute_deviation[i]<=3*sample_standard_deviation else None for i in range(self.n)]
         indexes_to_remove=[i for i,value in enumerate(dataset) if value==None]
         self.pop(tuple(index+1 for index in indexes_to_remove))
         return [index+1 for index in indexes_to_remove]
@@ -124,7 +126,7 @@ class Dataset:
             self.n=len(values)
         self.dataset[variable]=[decimal(value) for value in values]
         self.m+=1
-        self.variables=[self.dataset.keys()]
+        self.variables=list(self.dataset.keys())
     def maximum(self,variable):
         """
         Return the maximum of an existing variable.
