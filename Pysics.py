@@ -97,8 +97,6 @@ class Dataset:
         Remove the number-th (starting from 1) data from all existing variables.
         :param numbers: (tuple(number,...)) Indexes of the data to remove.
         """
-        if type(numbers[0])==tuple:
-            numbers=numbers[0]
         numbers=tuple(number-1 for number in numbers)
         for variable in self.dataset.keys():
             self.dataset[variable]=[value for i,value in enumerate(self.dataset[variable]) if i not in numbers]
@@ -114,7 +112,7 @@ class Dataset:
         absolute_deviation=[abs(value) for value in self.absolute_deviation(variable)]
         dataset=[self.dataset[variable][i] if absolute_deviation[i]<=3*sample_standard_deviation else None for i in range(self.n)]
         indexes_to_remove=[i for i,value in enumerate(dataset) if value==None]
-        self.pop(tuple(index+1 for index in indexes_to_remove))
+        self.pop(*tuple(index+1 for index in indexes_to_remove))
         return [index+1 for index in indexes_to_remove]
     def update(self,variable,values):
         """
