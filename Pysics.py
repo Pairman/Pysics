@@ -118,7 +118,7 @@ class Dataset:
         """
         Add a list of values of a new variable with the same length n.
         :param variable: (str) Name of the new variable.
-        :values: (list(decimal.Decimal|number,...)) Values of the variable.
+        :param values: (list(decimal.Decimal|number,...)) Values of the variable.
         """
         if not self.n:
             self.n=len(values)
