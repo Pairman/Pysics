@@ -1,6 +1,7 @@
 # Pysics
 Statistic tools for calculating data from physical experiments, in Python.
 This module uses the `decimal` module.
+Open source under GPU/GPL v3 license.
 
 # Functions
 ## decimal()
